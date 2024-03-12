@@ -1,4 +1,4 @@
-# FastAPI E-Commerce Challenge
+# FastAPI E-Commerce Assignmnet
 
 ## Introduction
 This repository contains the implementation of an E-Commerce API using FastAPI, along with additional features and endpoints as part of an assignment.
