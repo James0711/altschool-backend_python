@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException
-
 from schema.order import Order, OrderCreate, orders
 from services.order import order_service
 
@@ -17,7 +16,6 @@ def list_orders():
 def create_order(payload: OrderCreate = Depends(order_service.check_availability)):
     customer_id: int = payload.customer_id
     product_ids: list[int] = payload.items
-    print('=================', product_ids)
     # get curr order id
     order_id = len(orders) + 1
     new_order = Order(
@@ -28,20 +26,12 @@ def create_order(payload: OrderCreate = Depends(order_service.check_availability
     orders.append(new_order)
     return {'message': 'Order created successfully', 'data': new_order}
 
-@order_router.post('/{order_id}', status_code=200)
-def checkout_order(order_id: int, checkout: bool):
-    curr_order = None
+@order_router.put('/checkout/{order_id}', status_code=200)
+def checkout_order(order_id: int):
     for order in orders:
-        if order_id == order.id:
-            curr_order = orders[order_id - 1]
-            break
-        if not curr_order:
-            raise HTTPException(status_code=404, detail="Order not found")
-
-            
-    if checkout:
-       curr_order.status = "completed"
-       return {"message": "Order successfully completed", "data": curr_order}
-
-
-        
+        if order.id == order_id:
+            if order.status == "completed":
+                raise HTTPException(status_code=400, detail="Order has already been checked out")
+            order.status = "completed"
+            return {'message': 'Order checked out successfully', 'data': order}
+    raise HTTPException(status_code=404, detail="Order not found")

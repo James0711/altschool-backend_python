@@ -1,7 +1,5 @@
-from fastapi import APIRouter, HTTPException, Depends
-
+from fastapi import APIRouter, HTTPException
 from schema.customer import Customer, CustomerCreate, customers
-from services.customer import customer_service
 
 customer_router = APIRouter()
 
@@ -11,7 +9,7 @@ customer_router = APIRouter()
 
 # create customer
 @customer_router.post('/', status_code=201)
-def create_customer(payload: CustomerCreate = Depends(customer_service.check_existing_customer)):
+def create_customer(payload: CustomerCreate):
     customer_id = len(customers) + 1
     new_customer = Customer(
         id=customer_id, 
@@ -33,6 +31,7 @@ def edit_customer(customer_id: int, payload: CustomerCreate):
         if customer.id == customer_id:
             curr_customer = customer
             break
+
     if not curr_customer:
         raise HTTPException(status_code=404, detail="customer not found")
     curr_customer.username = payload.username

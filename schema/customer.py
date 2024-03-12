@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from pydantic import BaseModel
 
 class Customer(BaseModel):
@@ -12,6 +11,6 @@ class CustomerCreate(BaseModel):
 
 
 customers: list[Customer] = [
-    Customer(id=1, username="damilare", address="3, olusola str"),
-    Customer(id=2, username="sweetboy", address="23, johnson str")
+    Customer(id=1, username="Timothy", address="30B State housing str"),
+    Customer(id=2, username="Paul", address="14 IBB way")
 ]

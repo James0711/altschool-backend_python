@@ -1,18 +1,19 @@
 from pydantic import BaseModel
+from decimal import Decimal
 
-from schema.product import Product
-
-class Order(BaseModel):
+class Product(BaseModel):
     id: int
-    customer_id: int
-    items: list[int | Product]
-    status: str = "pending"
+    name: str
+    price: Decimal
+    quantity_available: int
 
-class OrderCreate(BaseModel):
-    customer_id: int
-    items: list[int]
-    status: str = "pending"
+class ProductCreate(BaseModel):
+    name: str
+    price: Decimal
+    quantity_available: int
 
-orders = [
-    Order(id=1, customer_id=1, items=[1, 2], status="pending")
-]
+products = {
+    1: Product(id=1, name="Holandia", price=Decimal('1500.00'), quantity_available=1),
+    2: Product(id=2, name="Coke", price=Decimal('300.00'), quantity_available=15),
+    3: Product(id=3, name="Sprite", price=Decimal('10.50'), quantity_available=5),
+}
